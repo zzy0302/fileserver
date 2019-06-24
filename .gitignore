@@ -1,0 +1,16 @@
+# JetBrain
+/.idea
+.idea/
+.idea
+# MacOS
+/.DS_Store
+/*/.DS_Store
+ 
+
+# node
+/node_modules
+/backend/node_modules
+
+# yarn
+/yarn-error.log
+/yarn.lock
