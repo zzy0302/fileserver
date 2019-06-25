@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const mysql = require('mysql');
 const {dbConnectionInfo} = require('../config');
+var cookieParser = require('cookie-parser');  
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -51,15 +53,17 @@ router.post('/login', function(req, res, next) {
             }
             else {
                 respond=r.map((item)=>{
-                if (item.password.length > 0) {
-                    console.log(args.password,item.password)
-                    return {success:args.password===item.password?true:false}
-                }
-                else {
-                    return {success:false}
-                }
-            })
-            res.send(respond);
+                    if (item.password.length > 0) {
+                        console.log(args.password,item.password)
+                        name=item.name
+                        return {success:args.password===item.password?true:false}
+                    }
+                    else {
+                        return {success:false}
+                    }
+                })
+                res.cookie("name",name,{domain:'pc.washingpatrick.cn', maxAge: 36000, httpOnly: true, signed:true});  
+                res.send(respond);
             }
         }            
     });

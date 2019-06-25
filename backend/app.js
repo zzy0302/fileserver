@@ -17,7 +17,7 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('this1is2a3test4please5modify6it7when8build'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
