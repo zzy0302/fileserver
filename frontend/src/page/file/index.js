@@ -4,9 +4,11 @@ import { CenterLayout } from "../../component/layout/center-layout";
 import {Form, Button, Select, message} from 'antd';
 import { serverConfig } from "../../config";
 import axios from 'axios';
-axios.defaults.withCredentials = true;
 
-export class UserIndexPage extends React.Component {
+
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+
+export class FileIndexPage extends React.Component {
     constructor(props) {
         super(props);
 
@@ -16,28 +18,24 @@ export class UserIndexPage extends React.Component {
             type: 'info'
         };
     }
-    userLogin() {
+
+    GetFile() {
+        axios.defaults.withCredentials = true;
         axios
-            .post(`${serverConfig.url}/create`, {
+            .post(`${serverConfig.url}/files/getall` ,{
                 user: 1
             })
             .then((res) => {
-                if (res.data.success) {
-                    if (res.data.illegal) {
-                        message.error('身份非法，请重新登录');
-                        this.props.history.push('/');
-                    }
+                if (res.data[0].success) {
                     this.setState({loadDown:true})
                 } else {
                     message.error('数据加载失败，请检查网络连接');
-                    this.setState({
-                        loadDown: true
-                    });
+                    this.setState({loadDown: true});
                 }
             })
     }
     componentDidMount() {
-        this.userLogin();
+        this.GetFile();
     }
 
     render() {

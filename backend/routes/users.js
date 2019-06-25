@@ -35,7 +35,6 @@ router.post('/create', function(req, res, next) {
 });
 
 router.post('/login', function(req, res, next) {
-    console.log(req.body)
     args=req.body
     let connection = mysql.createConnection(dbConnectionInfo);
     respond=[]
@@ -54,15 +53,14 @@ router.post('/login', function(req, res, next) {
             else {
                 respond=r.map((item)=>{
                     if (item.password.length > 0) {
-                        console.log(args.password,item.password)
-                        name=item.name
+                        res.cookie("name",item.name,{domain: "localhost", maxAge: 36000, httpOnly: true, signed:true}); 
                         return {success:args.password===item.password?true:false}
                     }
                     else {
                         return {success:false}
                     }
                 })
-                res.cookie("name",name,{domain:'pc.washingpatrick.cn', maxAge: 36000, httpOnly: true, signed:true});  
+                 
                 res.send(respond);
             }
         }            

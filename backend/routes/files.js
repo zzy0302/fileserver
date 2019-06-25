@@ -13,7 +13,9 @@ router.post('/upload', function(req, res, next) {
 });
 
 router.post('/getall', function(req, res, next) {
+    // console.log(req)
     console.log(req.body)
+    console.log(req.cookies)
 });
 
 router.post('/download', function(req, res, next) {

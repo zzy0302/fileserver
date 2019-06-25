@@ -10,7 +10,7 @@ export class IndexPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            uuid: '',
+            sid: '',
             password: ''
         };
     }
@@ -23,26 +23,18 @@ export class IndexPage extends React.Component {
 
     submit() {
         const crypto = require('crypto');
-        let sign = crypto.createHmac('sha256', this.secretKey).update(this.state.password + 'papa').digest('base64');
+        let sign = crypto.createHmac('sha256', this.secretKey).update(this.state.password + 'QAQ.zzy').digest('base64');
         axios
-            .post(`${serverConfig.url}/login`, {
-                uuid: this.state.uuid,
-                user: this.state.uuid,
+            .post(`${serverConfig.url}/users/login`, {
+                sid: this.state.sid,
                 password: sign
             })
             .then((res) => {
-                if (res.data.success) {
+                console.log(res);
+                if (res.data[0].success) {
                     message.success('登录成功，即将为您跳转');
                     setTimeout(() => {
-                        if (res.data.admin) {
-                            this.props.history.push('/admin');
-                        } else if (res.data.dean) {
-                            this.props.history.push('/dean');
-                        } else if (res.data.teacher) {
-                            this.props.history.push('/teacher');
-                        } else {
-                            this.props.history.push('/student');
-                        }
+                        this.props.history.push('/file')
                     }, 1000);
                 } else {
                     message.error('用户名或密码错误');
@@ -64,9 +56,9 @@ export class IndexPage extends React.Component {
                         </h1>
                     </Form.Item>
                     <Form.Item>
-                        <Input placeholder={'学号'} prefix={<Icon type={'user'}/>} value={this.state.uuid}
+                        <Input placeholder={'学号'} prefix={<Icon type={'user'}/>} value={this.state.sid}
                                onChange={(e) => {
-                                   this.setState({uuid: e.target.value});
+                                   this.setState({sid: e.target.value});
                                }}/>
                     </Form.Item>
                     <Form.Item>
@@ -86,11 +78,11 @@ export class IndexPage extends React.Component {
                         }}>登录</Button>
                     </Form.Item>
                 </Form>
-                <div className={'affixBottom'}>
+                <div className={'affixBottom text-align-center'}>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <Avatar src={avatarImg} size={'large'}/>
                     <span className={'color-grey text-size-20px padding-left-10px'}>
-                        Powered By PAPA.zzy
+                        Powered By QAQ.zzy
                     </span>
                 </div>
             </CenterLayout>
