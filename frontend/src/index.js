@@ -1,12 +1,35 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from 'react';
+import ReactDom from 'react-dom'
+import {MainRouter} from './router';
+import axios from 'axios';
+import qs from 'qs';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// 引入全局配置和css配置
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+import {LocaleProvider} from 'antd';
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+
+moment.locale('zh-cn');
+
+// axios发送请求默认带cookie
+axios.defaults.withCredentials = true;
+// 防止产生options请求
+axios.interceptors.request.use(function (config) {
+    config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    if (config.method === 'post') {
+        config.data = qs.stringify({
+            ...config.data
+        })
+    }
+    return config;
+});
+
+ReactDom.render(
+    <LocaleProvider locale={zh_CN}>
+        <MainRouter/>
+    </LocaleProvider>,
+    document.getElementById('root')
+);
