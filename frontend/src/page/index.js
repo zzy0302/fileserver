@@ -4,6 +4,7 @@ import {CenterLayout} from "../component/layout/center-layout";
 import avatarImg from '../img/luotianyi.png';
 import axios from 'axios';
 import {serverConfig} from "../config";
+import cookie from 'react-cookies';
 
 export class IndexPage extends React.Component {
     secretKey = 'qaq';
@@ -28,10 +29,11 @@ export class IndexPage extends React.Component {
             .post(`${serverConfig.url}/users/login`, {
                 sid: this.state.sid,
                 password: sign
-            })
+            },{withCredentials: true})
             .then((res) => {
                 console.log(res);
                 if (res.data[0].success) {
+                    cookie.save('name',res.data[0].name);
                     message.success('登录成功，即将为您跳转');
                     setTimeout(() => {
                         this.props.history.push('/file')

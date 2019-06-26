@@ -3,7 +3,7 @@ var router = express.Router();
 const mysql = require('mysql');
 const {dbConnectionInfo} = require('../config');
 var cookieParser = require('cookie-parser');  
-
+router.use(cookieParser('this1is2a3test4please5modify6it7when8build'));
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -53,12 +53,13 @@ router.post('/login', function(req, res, next) {
             else {
                 respond=r.map((item)=>{
                     if (item.password.length > 0) {
-                        res.cookie("name",item.name,{domain: "localhost", maxAge: 36000, httpOnly: true, signed:true}); 
-                        return {success:args.password===item.password?true:false}
+                        if (args.password===item.password) {
+                            res.cookie("sid",item.sid,{maxAge: 360000, httpOnly: true}); 
+                        return {success:true,name:item.name,}
+                        }
+                        else return {success:false}
                     }
-                    else {
-                        return {success:false}
-                    }
+                    else return {success:false}
                 })
                  
                 res.send(respond);

@@ -13,9 +13,12 @@ router.post('/upload', function(req, res, next) {
 });
 
 router.post('/getall', function(req, res, next) {
-    // console.log(req)
-    console.log(req.body)
-    console.log(req.cookies)
+    args=req.body
+    // let connection = mysql.createConnection(dbConnectionInfo);
+    // connection.end()
+    respond=[]
+    respond.push({success:true})
+    res.send(respond)
 });
 
 router.post('/download', function(req, res, next) {
